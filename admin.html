@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin - Lihat Lokasi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+      #map {
+        height: 100vh;
+      }
+      .info {
+        position: absolute;
+        background: white;
+        padding: 10px;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="info" id="info">Belum ada data lokasi</div>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+      let map = L.map("map").setView([-6.2, 106.8], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map
+      );
+
+      const data = JSON.parse(localStorage.getItem("lokasiUser"));
+
+      if (data) {
+        L.marker([data.lat, data.lng])
+          .addTo(map)
+          .bindPopup("📍 Lokasi User")
+          .openPopup();
+
+        map.setView([data.lat, data.lng], 16);
+
+        document.getElementById("info").innerHTML = `Latitude: ${data.lat}<br>
+         Longitude: ${data.lng}<br>
+         Waktu: ${data.waktu}`;
+      }
+    </script>
+  </body>
+</html>
